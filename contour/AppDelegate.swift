@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  contour
-//
-//  Created by Rob Mayoff on 1/7/18.
-//  Copyright © 2018 Rob Mayoff. All rights reserved.
-//
-
 import Cocoa
 
 @NSApplicationMain

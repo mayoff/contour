@@ -35,6 +35,7 @@
 		314FAD332002D456004B9D2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		314FAD362002D456004B9D2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		314FAD382002D456004B9D2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		314FAD3D2002DF50004B9D2D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 		314FAD0920021277004B9D2D = {
 			isa = PBXGroup;
 			children = (
+				314FAD3D2002DF50004B9D2D /* README.md */,
 				314FAD232002BA20004B9D2D /* Lipski-Preparata.pdf */,
 				314FAD1420021277004B9D2D /* contour */,
 				314FAD2B2002D456004B9D2D /* iosTextContour */,
