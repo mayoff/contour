@@ -19,6 +19,7 @@
 		314FAD1A20021277004B9D2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		314FAD1C20021277004B9D2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		314FAD1D20021277004B9D2D /* contour.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = contour.entitlements; sourceTree = "<group>"; };
+		314FAD232002BA20004B9D2D /* Lipski-Preparata.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Lipski-Preparata.pdf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +36,7 @@
 		314FAD0920021277004B9D2D = {
 			isa = PBXGroup;
 			children = (
+				314FAD232002BA20004B9D2D /* Lipski-Preparata.pdf */,
 				314FAD1420021277004B9D2D /* contour */,
 				314FAD1320021277004B9D2D /* Products */,
 			);
