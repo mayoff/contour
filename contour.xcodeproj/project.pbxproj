@@ -11,6 +11,12 @@
 		314FAD1820021277004B9D2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD1720021277004B9D2D /* Assets.xcassets */; };
 		314FAD1B20021277004B9D2D /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD1920021277004B9D2D /* MainMenu.xib */; };
 		314FAD252002BBF0004B9D2D /* LipskiPreparata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FAD242002BBF0004B9D2D /* LipskiPreparata.swift */; };
+		314FAD2D2002D456004B9D2D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FAD2C2002D456004B9D2D /* AppDelegate.swift */; };
+		314FAD2F2002D456004B9D2D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FAD2E2002D456004B9D2D /* ViewController.swift */; };
+		314FAD322002D456004B9D2D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD302002D456004B9D2D /* Main.storyboard */; };
+		314FAD342002D456004B9D2D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD332002D456004B9D2D /* Assets.xcassets */; };
+		314FAD372002D456004B9D2D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD352002D456004B9D2D /* LaunchScreen.storyboard */; };
+		314FAD3C2002D467004B9D2D /* LipskiPreparata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FAD242002BBF0004B9D2D /* LipskiPreparata.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +28,24 @@
 		314FAD1D20021277004B9D2D /* contour.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = contour.entitlements; sourceTree = "<group>"; };
 		314FAD232002BA20004B9D2D /* Lipski-Preparata.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Lipski-Preparata.pdf"; sourceTree = "<group>"; };
 		314FAD242002BBF0004B9D2D /* LipskiPreparata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LipskiPreparata.swift; sourceTree = "<group>"; };
+		314FAD2A2002D456004B9D2D /* iosTextContour.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosTextContour.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		314FAD2C2002D456004B9D2D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		314FAD2E2002D456004B9D2D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		314FAD312002D456004B9D2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		314FAD332002D456004B9D2D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		314FAD362002D456004B9D2D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		314FAD382002D456004B9D2D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		314FAD0F20021277004B9D2D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FAD272002D456004B9D2D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,6 +60,7 @@
 			children = (
 				314FAD232002BA20004B9D2D /* Lipski-Preparata.pdf */,
 				314FAD1420021277004B9D2D /* contour */,
+				314FAD2B2002D456004B9D2D /* iosTextContour */,
 				314FAD1320021277004B9D2D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				314FAD1220021277004B9D2D /* contour.app */,
+				314FAD2A2002D456004B9D2D /* iosTextContour.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,6 +85,19 @@
 				314FAD1D20021277004B9D2D /* contour.entitlements */,
 			);
 			path = contour;
+			sourceTree = "<group>";
+		};
+		314FAD2B2002D456004B9D2D /* iosTextContour */ = {
+			isa = PBXGroup;
+			children = (
+				314FAD2C2002D456004B9D2D /* AppDelegate.swift */,
+				314FAD2E2002D456004B9D2D /* ViewController.swift */,
+				314FAD302002D456004B9D2D /* Main.storyboard */,
+				314FAD332002D456004B9D2D /* Assets.xcassets */,
+				314FAD352002D456004B9D2D /* LaunchScreen.storyboard */,
+				314FAD382002D456004B9D2D /* Info.plist */,
+			);
+			path = iosTextContour;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,6 +120,23 @@
 			productReference = 314FAD1220021277004B9D2D /* contour.app */;
 			productType = "com.apple.product-type.application";
 		};
+		314FAD292002D456004B9D2D /* iosTextContour */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 314FAD392002D456004B9D2D /* Build configuration list for PBXNativeTarget "iosTextContour" */;
+			buildPhases = (
+				314FAD262002D456004B9D2D /* Sources */,
+				314FAD272002D456004B9D2D /* Frameworks */,
+				314FAD282002D456004B9D2D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iosTextContour;
+			productName = iosTextContour;
+			productReference = 314FAD2A2002D456004B9D2D /* iosTextContour.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -96,6 +148,10 @@
 				ORGANIZATIONNAME = "Rob Mayoff";
 				TargetAttributes = {
 					314FAD1120021277004B9D2D = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					314FAD292002D456004B9D2D = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
 					};
@@ -115,6 +171,7 @@
 			projectRoot = "";
 			targets = (
 				314FAD1120021277004B9D2D /* contour */,
+				314FAD292002D456004B9D2D /* iosTextContour */,
 			);
 		};
 /* End PBXProject section */
@@ -126,6 +183,16 @@
 			files = (
 				314FAD1820021277004B9D2D /* Assets.xcassets in Resources */,
 				314FAD1B20021277004B9D2D /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FAD282002D456004B9D2D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314FAD372002D456004B9D2D /* LaunchScreen.storyboard in Resources */,
+				314FAD342002D456004B9D2D /* Assets.xcassets in Resources */,
+				314FAD322002D456004B9D2D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +208,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		314FAD262002D456004B9D2D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314FAD2F2002D456004B9D2D /* ViewController.swift in Sources */,
+				314FAD3C2002D467004B9D2D /* LipskiPreparata.swift in Sources */,
+				314FAD2D2002D456004B9D2D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -150,6 +227,22 @@
 				314FAD1A20021277004B9D2D /* Base */,
 			);
 			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		314FAD302002D456004B9D2D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				314FAD312002D456004B9D2D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		314FAD352002D456004B9D2D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				314FAD362002D456004B9D2D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -293,6 +386,43 @@
 			};
 			name = Release;
 		};
+		314FAD3A2002D456004B9D2D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GVBKTM899S;
+				INFOPLIST_FILE = iosTextContour/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dqd.iosTextContour;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		314FAD3B2002D456004B9D2D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = GVBKTM899S;
+				INFOPLIST_FILE = iosTextContour/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dqd.iosTextContour;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -310,6 +440,15 @@
 			buildConfigurations = (
 				314FAD2120021277004B9D2D /* Debug */,
 				314FAD2220021277004B9D2D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		314FAD392002D456004B9D2D /* Build configuration list for PBXNativeTarget "iosTextContour" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314FAD3A2002D456004B9D2D /* Debug */,
+				314FAD3B2002D456004B9D2D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
