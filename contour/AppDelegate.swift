@@ -18,6 +18,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         rectsView.rects = []
     }
 
+    @IBAction func redrawButtonWasClicked(_ sender: Any) {
+        rectsView.markUnionPathDirty()
+    }
+
     @IBAction func copySourceCodeButtonWasClicked(_ sender: Any) {
         let encoder = JSONEncoder()
         let data = try! encoder.encode(rectsView.rects)
@@ -37,26 +41,22 @@ class RectsView: NSView {
         layer!.backgroundColor = NSColor.white.cgColor
 
         observers.append(UserDefaults.standard.observe(\UserDefaults.rectInset) { [weak self] (_, _) in
-            self?.cachedUnionPath = nil
-            self?.needsDisplay = true
+            self?.markUnionPathDirty()
         })
         observers.append(UserDefaults.standard.observe(\UserDefaults.cornerRadius) { [weak self] (_, _) in
-            self?.cachedUnionPath = nil
-            self?.needsDisplay = true
+            self?.markUnionPathDirty()
         })
     }
 
     private static let defaultRectsJson = "[[[65,26],[80,197]],[[37,145],[271,43]],[[230,67],[94,137]],[[119,48],[140,57]]]"
+//    private static let defaultRectsJson = "[[[17,60],[49,53]],[[40,39],[51,48]]]"
 
     var rects: [CGRect] = {
         let data = RectsView.defaultRectsJson.data(using: .utf8)!
         let decoder = JSONDecoder()
         return try! decoder.decode([CGRect].self, from: data)
     }() {
-        didSet {
-            cachedUnionPath = nil
-            needsDisplay = true
-        }
+        didSet { markUnionPathDirty() }
     }
 
     var fillColor: NSColor = NSColor.selectedTextBackgroundColor {
@@ -81,9 +81,12 @@ class RectsView: NSView {
         return path
     }
 
-    override func draw(_ dirtyRect: NSRect) {
-        NSLog("draw!")
+    func markUnionPathDirty() {
+        cachedUnionPath = nil
+        needsDisplay = true
+    }
 
+    override func draw(_ dirtyRect: NSRect) {
         fillColor.set()
         let gc = NSGraphicsContext.current!.cgContext
         gc.addPath(unionPath)
@@ -109,7 +112,6 @@ class RectsView: NSView {
             case .leftMouseDragged:
                 if let corner = event.location(in: self)?.rounded {
                     size = corner - origin
-                    print(size)
                     rectBeingDragged = CGRect(origin: origin, size: size)
                 }
             case .leftMouseUp:
@@ -133,10 +135,7 @@ class RectsView: NSView {
 
     // not standardized, so origin is always the location of the mouseDown
     private var rectBeingDragged: CGRect? = nil {
-        didSet {
-            cachedUnionPath = nil
-            needsDisplay = true
-        }
+        didSet { markUnionPathDirty() }
     }
 
     private func moveCornerOfLatestRect(to corner: CGPoint) {
@@ -165,7 +164,12 @@ private struct Segment {
     var leftChildIndex: Int?
     var rightChildIndex: Int?
 
-    var mid: Int { return (y0 + y1) / 2 }
+    var mid: Int { return (y0 + y1 + 1) / 2 }
+
+    func withChildrenThatOverlap(_ side: Side, do body: (_ childIndex: Int) -> ()) {
+        if side.y0 < mid, let l = leftChildIndex { body(l) }
+        if mid < side.y1, let r = rightChildIndex { body(r) }
+    }
 
     init(y0: Int, y1: Int) {
         self.y0 = y0
@@ -190,6 +194,10 @@ private struct /*Vertical*/Side: Comparable {
         case right = 1
     }
 
+    func fullyContains(_ segment: Segment) -> Bool {
+        return y0 <= segment.y0 && segment.y1 <= y1
+    }
+
     static func ==(lhs: Side, rhs: Side) -> Bool {
         return lhs.x == rhs.x && lhs.edge == rhs.edge && lhs.y0 == rhs.y0 && lhs.y1 == rhs.y1
     }
@@ -207,8 +215,10 @@ private struct /*Vertical*/Side: Comparable {
 
 extension CGPath {
     static func makeUnion(of rects: [CGRect], cornerRadius: CGFloat) -> CGPath {
-        guard rects.count > 0 && false else {
+        guard rects.count > 0 /*&& false*/ else {
             let path = CGMutablePath()
+
+            // debug code
             for rect in rects {
                 path.addRoundedRect(in: rect, cornerWidth: min(cornerRadius, rect.size.width / 2), cornerHeight: min(cornerRadius, rect.size.height / 2))
             }
@@ -225,9 +235,10 @@ extension CGPath {
 
         func makeSegment(y0: Int, y1: Int) -> Int {
             let index = segments.count
-            segments.append(Segment(y0: y0, y1: y1))
+            let segment: Segment = Segment(y0: y0, y1: y1)
+            segments.append(segment)
             if y1 - y0 > 1 {
-                let mid = (y0 + y1) / 2
+                let mid = segment.mid
                 segments[index].leftChildIndex = makeSegment(y0: y0, y1: mid)
                 segments[index].rightChildIndex = makeSegment(y0: mid, y1: y1)
             }
@@ -236,34 +247,16 @@ extension CGPath {
 
         _ = makeSegment(y0: 0, y1: ys.count - 1)
 
-        func makeSide(edge: Side.Edge, rect: CGRect) -> Side {
-            let x: Int
-            switch edge {
-            case .left: x = indexOfX[rect.minX]!
-            case .right: x = indexOfX[rect.maxX]!
+        func adjustInsertionCountsOfSegmentTree(atIndex i: Int, by delta: Int, for side: Side) {
+            var segment = segments[i]
+            if side.fullyContains(segment) {
+                segment.insertions += delta
+            } else {
+                segment.withChildrenThatOverlap(side) { adjustInsertionCountsOfSegmentTree(atIndex: $0, by: delta, for: side) }
             }
-            return Side(x: x, edge: edge, y0: indexOfY[rect.minY]!, y1: indexOfY[rect.maxY]!)
-        }
 
-        var stack = [Int]() // An array to be taken by twos, as y0 and y1 of currently-included segments.
-
-        func compl(_ i: Int) {
-            let segment = segments[i]
-            switch segment.status {
-            case .empty:
-                if let top = stack.last, segment.y0 == top {
-                    // segment.y0 == prior segment.y1, so merge.
-                    stack[stack.count] = segment.y1
-                } else {
-                    stack.append(segment.y0)
-                    stack.append(segment.y1)
-                }
-            case .partial:
-                // Note that only branch nodes can be .partial, so these force-unwraps are safe.
-                compl(segment.leftChildIndex!)
-                compl(segment.rightChildIndex!)
-            case .full: break
-            }
+            segment.status = uncachedStatus(of: segment)
+            segments[i] = segment
         }
 
         func uncachedStatus(of segment: Segment) -> Segment.Status {
@@ -274,63 +267,79 @@ extension CGPath {
             return .empty
         }
 
-        func insert(_ side: Side, intoSegmentAtIndex i: Int) {
-            var segment = segments[i]
-            if side.y0 <= segment.y0 && segment.y1 <= side.y1 {
-                compl(i)
-                segment.insertions += 1
-            } else {
-                if let l = segment.leftChildIndex, side.y0 < segment.mid { insert(side, intoSegmentAtIndex: l) }
-                if let r = segment.rightChildIndex, segment.mid < side.y1 { insert(side, intoSegmentAtIndex: r) }
+        var stack = [Int]() // An array to be taken by twos, as y0 and y1 of currently-included segments.
+
+        func addEmptySegmentsOfSegmentTree(atIndex i: Int, thatOverlap side: Side) {
+            let segment = segments[i]
+            switch segment.status {
+            case .empty where side.fullyContains(segment):
+                if let top = stack.last, segment.y0 == top {
+                    // segment.y0 == prior segment.y1, so merge.
+                    stack[stack.count - 1] = segment.y1
+                } else {
+                    stack.append(segment.y0)
+                    stack.append(segment.y1)
+                }
+            case .partial, .empty:
+                segment.withChildrenThatOverlap(side) { addEmptySegmentsOfSegmentTree(atIndex: $0, thatOverlap: side) }
+            case .full: break
             }
-
-            segment.status = uncachedStatus(of: segment)
-            segments[i] = segment
-        }
-
-        func remove(_ side: Side, fromSegmentAtIndex i: Int) {
-            var segment = segments[i]
-
-            if side.y0 <= segment.y0 && segment.y1 <= side.y1 {
-                segment.insertions -= 1
-                compl(i)
-            } else {
-                if let l = segment.leftChildIndex, side.y0 < segment.mid { remove(side, fromSegmentAtIndex: l) }
-                if let r = segment.rightChildIndex, segment.mid < side.y1 { remove(side, fromSegmentAtIndex: r) }
-            }
-
-            segment.status = uncachedStatus(of: segment)
-            segments[i] = segment
         }
 
         var contourSides = [Side]()
 
         func contributeContourSidesFromStack(x: Int, edge: Side.Edge) {
+            print("contributing \(x) \(edge) \(stack)")
             for i in stride(from: 0, to: stack.count, by: 2) {
                 contourSides.append(Side(x: x, edge: edge, y0: stack[i], y1: stack[i+1]))
             }
             stack.removeAll(keepingCapacity: true)
         }
 
+        func makeSide(edge: Side.Edge, rect: CGRect) -> Side {
+            let x: Int
+            switch edge {
+            case .left: x = indexOfX[rect.minX]!
+            case .right: x = indexOfX[rect.maxX]!
+            }
+            return Side(x: x, edge: edge, y0: indexOfY[rect.minY]!, y1: indexOfY[rect.maxY]!)
+        }
+
         let sides = (rects.map({ makeSide(edge: .left, rect: $0) }) + rects.map({ makeSide(edge: .right, rect: $0)})).sorted()
-        // First side is guaranteed to be a left side.
-        insert(sides[0], intoSegmentAtIndex: 0)
         var priorX = sides[0].x
         var priorEdge = Side.Edge.left
-        for side in sides.dropFirst() {
+        for side in sides {
             if side.x != priorX || side.edge != priorEdge {
                 contributeContourSidesFromStack(x: priorX, edge: priorEdge)
                 priorX = side.x
                 priorEdge = side.edge
             }
             switch priorEdge {
-            case .left: insert(side, intoSegmentAtIndex: 0)
-            case .right: remove(side, fromSegmentAtIndex: 0)
+            case .left:
+                addEmptySegmentsOfSegmentTree(atIndex: 0, thatOverlap: side)
+                adjustInsertionCountsOfSegmentTree(atIndex: 0, by: 1, for: side)
+            case .right:
+                adjustInsertionCountsOfSegmentTree(atIndex: 0, by: -1, for: side)
+                addEmptySegmentsOfSegmentTree(atIndex: 0, thatOverlap: side)
             }
         }
         contributeContourSidesFromStack(x: priorX, edge: priorEdge)
 
-        return CGPath(rect: .zero, transform: nil)
+        let path = CGMutablePath()
+        for side in contourSides {
+            let gx = xs[side.x]
+            let gy0 = ys[side.y0]
+            let gy1 = ys[side.y1]
+            let offset: CGFloat
+            let w: CGFloat = 2
+            switch side.edge {
+            case .left: offset = -w
+            case .right: offset = 0
+            }
+            let rect = CGRect(x: gx + offset, y: gy0, width: w, height: gy1 - gy0)
+            path.addRect(rect)
+        }
+        return path.copy()!
     }
 }
 
