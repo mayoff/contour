@@ -1,3 +1,7 @@
+# UPDATE
+
+I have rewritten my implementation of this algorithm and made it available as a SwiftPM package: [the RectangleContour package](https://github.com/mayoff/RectangleContour).
+
 #  Contour of a Union of Iso-Oriented Rectangles
 
 This project implements, in Swift, the algorithm described by Lipski and Preparata. You can find the technical report describing the algorithm in file Lipski-Preparata.pdf.
